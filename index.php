@@ -8,7 +8,7 @@ $comparisonFile = $scFile = $evoFile = '';
 if(isset($_GET['uploadStatus'])){
     $uploadStatus = $_GET['uploadStatus'];
     if($uploadStatus === 'Files Uploaded') {
-        $clear = '<a href="clear.php">Clear Files</a>';
+        $clear = '<a class="red" href="clear.php">Clear Files</a>';
     }
 }
 if(isset($_GET['processorData'])){
@@ -16,15 +16,15 @@ if(isset($_GET['processorData'])){
 }
 if(isset($_SESSION['bothFileName'])){
     $comparisonFile = '<p><a href="bothDownload.php">Download Comparison File</a></p>';
-    $clear = '<a href="clear.php">Clear Files</a>';
+    $clear = '<a class="red" href="clear.php">Clear Files</a>';
 }
 if(isset($_SESSION['scFileName'])){
     $scFile = '<p><a href="scDownload.php">Download SC Mismatch File</a></p>';
-    $clear = '<a href="clear.php">Clear Files</a>';
+    $clear = '<a class="red" href="clear.php">Clear Files</a>';
 }
 if(isset($_SESSION['evoFileName'])){
     $evoFile = '<p><a href="evoDownload.php">Download Evo Mismatch File</a></p>';
-    $clear = '<a href="clear.php">Clear Files</a>';
+    $clear = '<a class="red" href="clear.php">Clear Files</a>';
 }
 ?>
 
@@ -104,11 +104,12 @@ if(isset($_SESSION['evoFileName'])){
             }else{
                 echo '<div class="center"><input class="btn btn-default" type="submit" value="Upload" name="upload"></div>';
             }?>
-            <div class="center"><?php echo $clear;
+            <div class="center"><?php
                 echo '<p class="red">'.$processorData.'</p>';
                 echo $comparisonFile;
                 echo $scFile;
                 echo $evoFile;
+                echo $clear;
                 ?></div>
         </form>
         </div>
