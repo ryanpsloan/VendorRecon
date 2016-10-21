@@ -100,7 +100,11 @@ if($_FILES['invoiceRegister']['error'] === 0 && $_FILES['vendorInvoice']['error'
         }
         //close file reading stream
         fclose($handle);
-
+        foreach($fileData as $key => $array){
+            if(count($array) !== 10){
+                unset($fileData[$key]);
+            }
+        }
         //var_dump("Invoice Register Begin", $fileData, "Invoice Register End");
         $_SESSION['invoiceRegister'] = $fileData;
 
@@ -200,7 +204,12 @@ if($_FILES['invoiceRegister']['error'] === 0 && $_FILES['vendorInvoice']['error'
         }
         //close file reading stream
         fclose($handle);
-
+        foreach($fileData as $key => $array){
+            //var_dump($array);
+            if(count($array) !== 11){
+                unset($fileData[$key]);
+            }
+        }
         //var_dump("Vendor Invoice Begin", $fileData,"Vendor Invoice End");
         $_SESSION['vendorInvoice'] = $fileData;
         fclose($log);

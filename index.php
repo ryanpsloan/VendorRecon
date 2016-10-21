@@ -4,6 +4,7 @@ var_dump($_GET);
 $uploadStatus = '';
 $clear = '';
 $processorData = '';
+$comparisonFile = $scFile = $evoFile = '';
 if(isset($_GET['uploadStatus'])){
     $uploadStatus = $_GET['uploadStatus'];
     if($uploadStatus === 'Files Uploaded') {
@@ -12,6 +13,18 @@ if(isset($_GET['uploadStatus'])){
 }
 if(isset($_GET['processorData'])){
     $processorData = $_GET['processorData'];
+}
+if(isset($_SESSION['bothFileName'])){
+    $comparisonFile = '<p><a href="bothDownload.php">Download Comparison File</a></p>';
+    $clear = '<a href="clear.php">Clear Files</a>';
+}
+if(isset($_SESSION['scFileName'])){
+    $scFile = '<p><a href="scDownload.php">Download SC Mismatch File</a></p>';
+    $clear = '<a href="clear.php">Clear Files</a>';
+}
+if(isset($_SESSION['evoFileName'])){
+    $evoFile = '<p><a href="evoDownload.php">Download Evo Mismatch File</a></p>';
+    $clear = '<a href="clear.php">Clear Files</a>';
 }
 ?>
 
@@ -61,6 +74,7 @@ if(isset($_GET['processorData'])){
                 compareBtnDiv.hide();
             }
 
+
         });
 
     </script>
@@ -90,7 +104,12 @@ if(isset($_GET['processorData'])){
             }else{
                 echo '<div class="center"><input class="btn btn-default" type="submit" value="Upload" name="upload"></div>';
             }?>
-            <div class="center"><?php echo $clear; ?></div>
+            <div class="center"><?php echo $clear;
+                echo '<p class="red">'.$processorData.'</p>';
+                echo $comparisonFile;
+                echo $scFile;
+                echo $evoFile;
+                ?></div>
         </form>
         </div>
         <div class="border center" id="compareBtnDiv">
@@ -98,7 +117,8 @@ if(isset($_GET['processorData'])){
         <form action="processor.php" method="POST">
             <p></p>
             <p><input class="btn btn-primary padded" id="compareBtn" type="submit" value="Compare"></p>
-            <p><?php echo '<p class="red">'.$processorData.'</p>'; ?>
+
+
         </form>
         </div>
 
