@@ -92,17 +92,16 @@ if($_FILES['invoiceRegister']['error'] === 0 && $_FILES['vendorInvoice']['error'
         $fileData = array();
 
         //read the data in line by line
-        //remove header
-        fgets($handle);
+
         while (!feof($handle)) {
             $line_of_data = fgets($handle); //gets data from file one line at a time
             $line_of_data = trim($line_of_data); //trims the data
-            $fileData[] = explode(",", $line_of_data); //breaks the line up into pieces that the array can store
+            $fileData[] = str_getcsv($line_of_data); //breaks the line up into pieces that the array can store
         }
         //close file reading stream
         fclose($handle);
 
-
+        //var_dump("Invoice Register Begin", $fileData, "Invoice Register End");
         $_SESSION['invoiceRegister'] = $fileData;
 
         /*
@@ -192,19 +191,20 @@ if($_FILES['invoiceRegister']['error'] === 0 && $_FILES['vendorInvoice']['error'
 
         //read the data in line by line
         //remove header
-        fgets($handle);
+        $header = fgets($handle);
+        //var_dump($header);
         while (!feof($handle)) {
             $line_of_data = fgets($handle); //gets data from file one line at a time
             $line_of_data = trim($line_of_data); //trims the data
-            $fileData[] = explode(",", $line_of_data); //breaks the line up into pieces that the array can store
+            $fileData[] = str_getcsv($line_of_data); //breaks the line up into pieces that the array can store
         }
         //close file reading stream
         fclose($handle);
 
-
+        //var_dump("Vendor Invoice Begin", $fileData,"Vendor Invoice End");
         $_SESSION['vendorInvoice'] = $fileData;
         fclose($log);
-        //var_dump('FILEDATA-VI', $fileData, 'END FILEDATA-VI');
+
         header("location: index.php?uploadStatus=Files Uploaded");
     }catch(Exception $e){
         header("location: index.php?uploadStatus=". $e->getMessage());
