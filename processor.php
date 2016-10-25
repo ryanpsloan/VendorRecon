@@ -101,7 +101,7 @@ if(isset($_SESSION['invoiceRegister']) && isset($_SESSION['vendorInvoice'])){
     $filename = '/var/www/html/vendorRecon/Processed_Files/vendorRecon_EVO_Unmatched_File-'.$month.'-'.$day.'-'.$year.'-'.$time.'.csv';
     $handle = fopen($filename, 'w');
     $empty = array();
-    foreach($linesToCompare as $key => $array){
+    foreach($evoOnly as $key => $array){
         fputcsv($handle, $empty);
         foreach($array as $arr){
             fputcsv($handle,$arr,',');

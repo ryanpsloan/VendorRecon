@@ -1,6 +1,6 @@
 <?php
 session_start();
-var_dump($_GET);
+//var_dump($_GET);
 $uploadStatus = '';
 $clear = '';
 $processorData = '';
@@ -19,11 +19,11 @@ if(isset($_SESSION['bothFileName'])){
     $clear = '<a class="red" href="clear.php">Clear Files</a>';
 }
 if(isset($_SESSION['scFileName'])){
-    $scFile = '<p><a href="scDownload.php">Download SC Mismatch File</a></p>';
+    $scFile = '<p><a href="scDownload.php">Download SC Unmatched File</a></p>';
     $clear = '<a class="red" href="clear.php">Clear Files</a>';
 }
 if(isset($_SESSION['evoFileName'])){
-    $evoFile = '<p><a href="evoDownload.php">Download Evo Mismatch File</a></p>';
+    $evoFile = '<p><a href="evoDownload.php">Download Evo Unmatched File</a></p>';
     $clear = '<a class="red" href="clear.php">Clear Files</a>';
 }
 ?>
@@ -55,13 +55,16 @@ if(isset($_SESSION['evoFileName'])){
         }
         ul li {
             padding: 5px 2px 5px 2px;
-            color: whitesmoke;
+
         }
         .red{
             color: red;
         }
         .green{
             color: green;
+        }
+        .blue{
+            color: blue;
         }
     </style>
     <script>
@@ -73,7 +76,13 @@ if(isset($_SESSION['evoFileName'])){
             }else{
                 compareBtnDiv.hide();
             }
-
+            var uploadDiv = $('#uploadDiv');
+            var processorData = "<?php if($processorData !== '') {echo $processorData;}else{echo "text";} ?>";
+            if(processorData !== 'text'){
+                uploadDiv.hide();
+            }else{
+                uploadDiv.show();
+            }
 
         });
 
@@ -81,37 +90,38 @@ if(isset($_SESSION['evoFileName'])){
 </head>
 <body>
 <div class="container-fluid">
-
+<nav><p><a href="index.php">Refresh</a></p></nav>
 <div class="row">
     <div class="col-md-4"></div>
     <div class="col-md-4">
-        <div class="border">
+        <div class="border" id="uploadDiv">
         <form action="upload.php" method="POST" enctype="multipart/form-data">
             <ul>
-                <li><label for="invoiceRegister">Upload Net Clock Billing Audit from EVO (.csv)</label></li>
+                <li><label class="blue" for="invoiceRegister">Billing Invoice Audit - NetClock from EVO (.csv)</label></li>
                 <li><input type="file" name="invoiceRegister"></li>
-                <li><label for="vendorInvoice">Upload SwipeClock Vendor Invoice (.csv)</label></li>
-                <ol><li>Open the Swipeclock invoice in Excel</li><li>Delete the ExtDescription Column</li><li>Save as a .csv</li></ol>
+                <li><label class="blue" for="vendorInvoice">Upload SwipeClock Vendor Invoice (.csv)</label></li>
+                <ol><li>Open the Swipeclock invoice in Excel</li><li>Delete the ExtDescription Column</li><li>Save as a .csv</li><li>Upload Here</li></ol>
                 <li><input type="file" name="vendorInvoice"></li>
             </ul>
 
-            <?php if(isset($_GET['uploadStatus'])) {
+            <?php
+            if(isset($_GET['uploadStatus'])) {
                 if ($_GET['uploadStatus'] === 'Files Uploaded') {
-                    echo '<div class="center green">' . $uploadStatus . '</div>';
-                } else {
+                    echo '<div class="center blue">' . $uploadStatus . '</div>';
+                }else{
                     echo '<div class="center red">' . $uploadStatus . '</div><div class="center"><input class="btn btn-default" type="submit" value="Upload" name="upload"></div>';
                 }
+            }else if(isset($_GET['processorData'])){
+
             }else{
                 echo '<div class="center"><input class="btn btn-default" type="submit" value="Upload" name="upload"></div>';
-            }?>
-            <div class="center"><?php
-                echo '<p class="red">'.$processorData.'</p>';
-                echo $comparisonFile;
-                echo $scFile;
-                echo $evoFile;
-                echo $clear;
-                ?></div>
+            }
+
+
+            ?>
+
         </form>
+            <p></p>
         </div>
         <div class="border center" id="compareBtnDiv">
 
@@ -122,6 +132,17 @@ if(isset($_SESSION['evoFileName'])){
 
         </form>
         </div>
+        <?php
+        if(isset($_GET['processorData'])) {
+            if ($_GET['processorData'] === 'Files Created Successfully') {
+                echo '<div class="border center"><p class="blue">' . $processorData . '</p>';
+                echo '<p>' . $clear . '</p>';
+                echo '<p class="green">' . $comparisonFile . '</p>';
+                echo '<p class="green">' . $scFile . '</p>';
+                echo '<p class="green">' . $evoFile . '</p></div>';
+            }
+        }
+        ?>
 
     </div>
     <div class="col-md-4"></div>
