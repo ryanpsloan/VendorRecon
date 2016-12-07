@@ -49,12 +49,12 @@ if($_FILES['invoiceRegister']['error'] === 0 && $_FILES['vendorInvoice']['error'
             throw new RuntimeException('Exceeded Filesize Limit.');
         }
         //define accepted extensions and types
-        $goodExts = array("txt", "csv");
-        $goodTypes = array("text/plain", "text/csv", "application/vnd.ms-excel");
+        $goodExts = array("csv");
+        $goodTypes = array("text/csv", "application/vnd.ms-excel");
         //test to ensure that uploaded file extension and type are acceptable - if not throw exception
         if (in_array($extension, $goodExts) === false || in_array($type, $goodTypes) === false) {
-            fwrite($log, "This page only accepts .txt and .csv files, please upload the correct format." . PHP_EOL);
-            throw new Exception("This page only accepts .txt and .csv files, please upload the correct format.");
+            fwrite($log, "This page only accepts .csv files, please upload the correct format." . PHP_EOL);
+            throw new Exception("This page only accepts .csv files, please upload the correct format.");
         }
         //move the file from temp location to the server - if fail throw exception
         $directory = "/var/www/html/vendorRecon/Files";
@@ -92,7 +92,7 @@ if($_FILES['invoiceRegister']['error'] === 0 && $_FILES['vendorInvoice']['error'
         $fileData = array();
 
         //read the data in line by line
-
+        //$header = fgets($handle);
         while (!feof($handle)) {
             $line_of_data = fgets($handle); //gets data from file one line at a time
             $line_of_data = trim($line_of_data); //trims the data
@@ -151,12 +151,12 @@ if($_FILES['invoiceRegister']['error'] === 0 && $_FILES['vendorInvoice']['error'
             throw new RuntimeException('Exceeded Filesize Limit.');
         }
         //define accepted extensions and types
-        $goodExts = array("txt", "csv");
-        $goodTypes = array("text/plain", "text/csv", "application/vnd.ms-excel");
+        $goodExts = array("csv");
+        $goodTypes = array("text/csv", "application/vnd.ms-excel");
         //test to ensure that uploaded file extension and type are acceptable - if not throw exception
         if (in_array($extension, $goodExts) === false || in_array($type, $goodTypes) === false) {
-            fwrite($log, "This page only accepts .txt and .csv files, please upload the correct format." . PHP_EOL);
-            throw new Exception("This page only accepts .txt and .csv files, please upload the correct format.");
+            fwrite($log, "This page only accepts .csv files, please upload the correct format." . PHP_EOL);
+            throw new Exception("This page only accepts .csv files, please upload the correct format.");
         }
         //move the file from temp location to the server - if fail throw exception
         $directory = "/var/www/html/vendorRecon/Files";
