@@ -13,7 +13,7 @@ if(isset($_SESSION['invoiceRegister']) && isset($_SESSION['vendorInvoice'])){
         //var_dump($line);
         $co = explode("-",$line[0]);
         //"CO#", "Company Name", "Total", "Invoice Date", "CheckDate", "Service Name"
-        $evoArr[] = array('EVO', preg_replace("/#/","",strtoupper(trim($co[0]))), trim($co[1]), $line[6]); //, $line[9], $line[7], $line[1] . " - " . $line[2]);
+        $evoArr[] = array('EVO', preg_replace("/#/","",strtoupper(trim($co[0]))), trim($co[1]), $line[6], $line[9]); //, $line[9], $line[7], $line[1] . " - " . $line[2]);
 
     }
     //sort($evo);
@@ -33,7 +33,7 @@ if(isset($_SESSION['invoiceRegister']) && isset($_SESSION['vendorInvoice'])){
     }
     //var_dump("SC END");
     //sort($sc);
-    //var_dump("SwipeClock Begin", $sc, "Swipeclock End");
+    //var_dump("SwipeClock Begin", $scArr, "Swipeclock End");
     foreach($evoArr as $key => $array){
         $evo[$array[1]][] = $array;
     }
@@ -51,7 +51,7 @@ if(isset($_SESSION['invoiceRegister']) && isset($_SESSION['vendorInvoice'])){
     //var_dump("EVO3",$evo, "EVO3 END");
     foreach($evo as $key => $array){
         unset($evo[$key]);
-        $evo[$key] = array("EVO", $array[0][1], $array[0][2], $array['sum']);
+        $evo[$key] = array("EVO", $array[0][1], $array[0][2], $array['sum'], $array[0][4]);
     }
     //var_dump($evo);
     foreach($scArr as $key => $array){
@@ -104,7 +104,7 @@ if(isset($_SESSION['invoiceRegister']) && isset($_SESSION['vendorInvoice'])){
     foreach($linesToCompare as $key => $arr){
 
         if(in_multiarray('EVO', $arr) === true && in_multiarray('SC', $arr) === true){
-            $both[$key] = array(array($arr[0][1], $arr[0][2], $arr[0][3], $arr[1][3], number_format($arr[0][3] + (float)$arr[1][3], 2)));
+            $both[$key] = array(array($arr[0][1], $arr[0][2], $arr[0][3], $arr[1][3], number_format($arr[0][3] + (float)$arr[1][3], 2), $arr[0][4]));
         }else if(in_multiarray('SC', $arr)){
             $scOnly[$key] = $arr;
         }else{
@@ -121,7 +121,7 @@ if(isset($_SESSION['invoiceRegister']) && isset($_SESSION['vendorInvoice'])){
     $filename = '/var/www/html/vendorRecon/Processed_Files/vendorRecon_Comparison_File-'.$month.'-'.$day.'-'.$year.'-'.$time.'.csv';
     $handle = fopen($filename, 'w');
     sort($both);
-    fputcsv($handle,array("CO#", "CO NAME", "EVO", "SC", "GRAND TOTAL"), ",");
+    fputcsv($handle,array("CO#", "CO NAME", "EVO", "SC", "GRAND TOTAL", "INVOICE DATE"), ",");
     foreach($both as $key => $array){
 
         foreach($array as $arr){
@@ -149,7 +149,7 @@ if(isset($_SESSION['invoiceRegister']) && isset($_SESSION['vendorInvoice'])){
     $filename = '/var/www/html/vendorRecon/Processed_Files/vendorRecon_EVO_Unmatched_File-'.$month.'-'.$day.'-'.$year.'-'.$time.'.csv';
     $handle = fopen($filename, 'w');
     sort($evoOnly);
-    fputcsv($handle,array("EVO", "CO#", "CO NAME", "TOTAL"), ",");
+    fputcsv($handle,array("EVO", "CO#", "CO NAME", "TOTAL", "INVOICE DATE"), ",");
     foreach($evoOnly as $key => $array){
 
         foreach($array as $arr){
