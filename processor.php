@@ -13,7 +13,7 @@ if(isset($_SESSION['invoiceRegister']) && isset($_SESSION['vendorInvoice'])){
         //var_dump($line);
         $co = explode("-",$line[0]);
         //"CO#", "Company Name", "Total", "Invoice Date", "CheckDate", "Service Name"
-        $evoArr[] = array('EVO', preg_replace(array("/#/","/+/"),"",strtoupper(trim($co[0]))), trim($co[1]), $line[6], $line[9]); //, $line[9], $line[7], $line[1] . " - " . $line[2]);
+        $evoArr[] = array('EVO', preg_replace(array("/#/","/\+/"),"",strtoupper(trim($co[0]))), trim($co[1]), $line[6], $line[9]); //, $line[9], $line[7], $line[1] . " - " . $line[2]);
 
     }
     //sort($evo);
@@ -27,7 +27,7 @@ if(isset($_SESSION['invoiceRegister']) && isset($_SESSION['vendorInvoice'])){
             continue;
         }else {
             //Number name total date service
-            $scArr[] = array('SC', preg_replace("/#/","",strtoupper(trim($line[2]))), trim($line[8]), -$line[7]); //, $line[1], $line[3]);
+            $scArr[] = array('SC', preg_replace(array("/#/","/\+/"),"",strtoupper(trim($line[2]))), trim($line[8]), -$line[7]); //, $line[1], $line[3]);
 
         }
     }
